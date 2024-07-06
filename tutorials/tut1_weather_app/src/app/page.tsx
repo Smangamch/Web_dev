@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { format, parseISO } from "date-fns";
 
 interface WeatherDetail {
   dt: number;
@@ -59,20 +60,36 @@ interface WeatherData {
 }
 export default function Home() {
   const { isLoading, error, data } = useQuery<WeatherData>("repoData", async () => {
-    console.log(process.env.OPEN_WEATHER_API_KEY)
-    const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Katlehong&appid=${process.env.OPEN_WEATHER_API_KEY}`)
+    const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=Katlehong&appid=${process.env.NEXT_PUBLIC_OPEN_WEATHER_API_KEY}`)
     return data;
   }
-    // fetch(`https://api.openweathermap.org/data/2.5/weather?q=Katlehong&appid=7b8e35e64de1218e0868e8fcb0a95e03`)
-    //   .then((res) => res.json())
   );
-  console.log("data", data);
-  if (isLoading) return "Loading.....";
 
-  // https://api.openweathermap.org/data/2.5/weather?q=Katlehong&appid=7b8e35e64de1218e0868e8fcb0a95e03`
+  const firstData = data?.list[0];
+
+  console.log("data", data);
+  if (isLoading) return (
+    <div className="flex items-center min-h-screen justify-center">
+      <p className="animate-bounce">Loading......</p>
+    </div>
+  );
+
   return (
     <div className="flex flex-col gap-4 bg-gray-100 min-h-screen">
       <Navbar />
+      <main className="px-3 max-w-7xl mx-auto flex flex-col gap-9 w-full pb-10 pt-4">
+        {/* Today's data */}
+        <section>
+          <div>
+            <h2 className="flex gap-1 text-2xl items-end">
+              <p>{format(parseISO(firstData?.dt_txt ?? ''), 'EEEE')}</p>
+            </h2>
+            <div></div>
+          </div>
+        </section>
+        {/* 7 days forcust */}
+        <section></section>
+      </main>
     </div>
   );
 }
