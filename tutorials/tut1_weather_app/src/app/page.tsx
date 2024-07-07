@@ -88,6 +88,7 @@ export default function Home() {
               <p className="text-lg">({format(parseISO(firstData?.dt_txt ?? ''), 'dd.MM.yyyy')})</p>
             </h2>
             <Container className="gap-10 px-6 items-center">
+              {/* Temparature */}
               <div className="flex flex-col px-4">
                 <span className="text-5xl">
                   {convertToCelsius(firstData?.main.temp ?? 0)}℃
@@ -106,6 +107,20 @@ export default function Home() {
                     {convertToCelsius(firstData?.main.temp_max ?? 0)}°↑
                   </span>
                 </p>
+              </div>
+              {/* time and weather icon */}
+              <div className="flex gap-10 sm:gap-16 overflow-x-auto w-full justify-between pr-3">
+                {data?.list.map((d,i)=>(
+                  <div key={i} className="flex flex-col justify-between gap-2 items-center text-xs font-semibold">
+                    <p className="whitespace-nowrap">
+                      {format(parseISO(d.dt_txt),'h:mm a')}
+                    </p>
+                    
+                    <p>
+                      {convertToCelsius(d?.main.temp??0)}°
+                    </p>
+                  </div>
+                ))}
               </div>
             </Container>
           </div>
