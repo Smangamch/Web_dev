@@ -3,6 +3,8 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { format, parseISO } from "date-fns";
+import Container from "@/components/Container";
+import { convertToCelsius } from "@/utils/convertK-C";
 
 interface WeatherDetail {
   dt: number;
@@ -79,12 +81,33 @@ export default function Home() {
       <Navbar />
       <main className="px-3 max-w-7xl mx-auto flex flex-col gap-9 w-full pb-10 pt-4">
         {/* Today's data */}
-        <section>
-          <div>
+        <section className="space-y-4">
+          <div className="space-y-2">
             <h2 className="flex gap-1 text-2xl items-end">
               <p>{format(parseISO(firstData?.dt_txt ?? ''), 'EEEE')}</p>
+              <p className="text-lg">({format(parseISO(firstData?.dt_txt ?? ''), 'dd.MM.yyyy')})</p>
             </h2>
-            <div></div>
+            <Container className="gap-10 px-6 items-center">
+              <div className="flex flex-col px-4">
+                <span className="text-5xl">
+                  {convertToCelsius(firstData?.main.temp ?? 0)}℃
+                </span>
+                <p className="text-xs space-x-1 whitespace-nowrap">
+                  <span>Feels Like</span>
+                  <span>
+                    {convertToCelsius(firstData?.main.feels_like ?? 0)}℃
+                  </span>
+                </p>
+                <p className="text-xs space-x-2">
+                  <span>
+                    {convertToCelsius(firstData?.main.temp_min ?? 0)}°↓
+                  </span>
+                  <span>
+                    {convertToCelsius(firstData?.main.temp_max ?? 0)}°↑
+                  </span>
+                </p>
+              </div>
+            </Container>
           </div>
         </section>
         {/* 7 days forcust */}
