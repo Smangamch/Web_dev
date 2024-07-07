@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { format, parseISO } from "date-fns";
 import Container from "@/components/Container";
 import { convertToCelsius } from "@/utils/convertK-C";
+import WeatherIcon from "@/components/WeatherIcon";
 
 interface WeatherDetail {
   dt: number;
@@ -110,14 +111,14 @@ export default function Home() {
               </div>
               {/* time and weather icon */}
               <div className="flex gap-10 sm:gap-16 overflow-x-auto w-full justify-between pr-3">
-                {data?.list.map((d,i)=>(
+                {data?.list.map((d, i) => (
                   <div key={i} className="flex flex-col justify-between gap-2 items-center text-xs font-semibold">
                     <p className="whitespace-nowrap">
-                      {format(parseISO(d.dt_txt),'h:mm a')}
+                      {format(parseISO(d.dt_txt), 'h:mm a')}
                     </p>
-                    
+                    <WeatherIcon iconName={d.weather[0].icon} />
                     <p>
-                      {convertToCelsius(d?.main.temp??0)}°
+                      {convertToCelsius(d?.main.temp ?? 0)}°
                     </p>
                   </div>
                 ))}
@@ -126,7 +127,9 @@ export default function Home() {
           </div>
         </section>
         {/* 7 days forcust */}
-        <section></section>
+        <section className="flex w-full flex-col gap-4">
+          <p className="text-2xl">Forcast (7 days)</p>
+        </section>
       </main>
     </div>
   );
