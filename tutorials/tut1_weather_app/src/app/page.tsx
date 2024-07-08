@@ -8,6 +8,7 @@ import { convertToCelsius } from "@/utils/convertK-C";
 import WeatherIcon from "@/components/WeatherIcon";
 import WeatherDetails from "@/components/WeatherDetails";
 import { mToKm } from "@/utils/mToKm";
+import { convWindSpeed } from "@/utils/convWindSpeed";
 
 interface WeatherDetail {
   dt: number;
@@ -141,7 +142,7 @@ export default function Home() {
                 sunrise={format(fromUnixTime(data?.city.sunrise??1702949452),'H:mm')}
                 sunset={format(fromUnixTime(data?.city.sunset??1702949452),'H:mm')}
                 humidity={`${firstData?.main.humidity}%`}
-                windSpeed={}
+                windSpeed={convWindSpeed(firstData?.wind.speed??1.66)}
               />
             </Container>
           </div>
