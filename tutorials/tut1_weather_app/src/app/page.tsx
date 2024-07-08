@@ -2,10 +2,12 @@
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { format, parseISO } from "date-fns";
+import { format, fromUnixTime, parseISO } from "date-fns";
 import Container from "@/components/Container";
 import { convertToCelsius } from "@/utils/convertK-C";
 import WeatherIcon from "@/components/WeatherIcon";
+import WeatherDetails from "@/components/WeatherDetails";
+import { mToKm } from "@/utils/mToKm";
 
 interface WeatherDetail {
   dt: number;
@@ -123,6 +125,24 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+            </Container>
+          </div>
+          <div className="flex gap-4">
+            {/* Left */}
+            <Container className="w-fit justify-center flex-col px-4 items-center">
+              <p className="capitalize text-center">{firstData?.weather[0].description}</p>
+              <WeatherIcon iconName={firstData?.weather[0].icon ?? ''} />
+            </Container>
+            {/* Right */}
+            <Container className="bg-yellow-300/80 px-6 gap-4 justify-between overflow-x-auto">
+              <WeatherDetails
+                visibility={mToKm(firstData?.visibility ?? 10000)}
+                airPressure={`${firstData?.main.pressure} hpa`}
+                sunrise={format(fromUnixTime(data?.city.sunrise??1702949452),'H:mm')}
+                sunset={format(fromUnixTime(data?.city.sunset??1702949452),'H:mm')}
+                humidity={`${firstData?.main.humidity}%`}
+                windSpeed={}
+              />
             </Container>
           </div>
         </section>
