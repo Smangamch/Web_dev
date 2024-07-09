@@ -9,6 +9,7 @@ import WeatherIcon from "@/components/WeatherIcon";
 import WeatherDetails from "@/components/WeatherDetails";
 import { mToKm } from "@/utils/mToKm";
 import { convWindSpeed } from "@/utils/convWindSpeed";
+import ForcastWeatherDetail from "@/components/ForcastWeatherDetail";
 
 interface WeatherDetail {
   dt: number;
@@ -72,6 +73,22 @@ export default function Home() {
   );
 
   const firstData = data?.list[0];
+
+  const uniqueDates = [
+    ...new Set(
+      data?.list.map(
+        (entry) => new Date(entry.dt * 1000).toISOString().split("T")[0]
+      )
+    )
+  ];
+
+  const firstDataForEachDate = uniqueDates.map((date) => {
+    return data?.list.find((entry) => {
+      const entryDate = new Date(entry.dt * 1000).toISOString().split("T")[0];
+      const entryTime = new Date(entry.dt * 1000).getHours();
+      return entryDate === date && entryTime >= 6;
+    })
+  });
 
   console.log("data", data);
   if (isLoading) return (
@@ -139,10 +156,10 @@ export default function Home() {
               <WeatherDetails
                 visibility={mToKm(firstData?.visibility ?? 10000)}
                 airPressure={`${firstData?.main.pressure} hpa`}
-                sunrise={format(fromUnixTime(data?.city.sunrise??1702949452),'H:mm')}
-                sunset={format(fromUnixTime(data?.city.sunset??1702949452),'H:mm')}
+                sunrise={format(fromUnixTime(data?.city.sunrise ?? 1702949452), 'H:mm')}
+                sunset={format(fromUnixTime(data?.city.sunset ?? 1702949452), 'H:mm')}
                 humidity={`${firstData?.main.humidity}%`}
-                windSpeed={convWindSpeed(firstData?.wind.speed??1.66)}
+                windSpeed={convWindSpeed(firstData?.wind.speed ?? 1.66)}
               />
             </Container>
           </div>
@@ -150,6 +167,31 @@ export default function Home() {
         {/* 7 days forcust */}
         <section className="flex w-full flex-col gap-4">
           <p className="text-2xl">Forcast (7 days)</p>
+          {firstDataForEachDate.map((d, i) => (
+            <ForcastWeatherDetail
+              key={i}
+              description={d?.weather[0].description ?? ''}
+              weatherIcon={d?.weather[0].icon ?? '01d'}
+              date={format(parseISO(d?.dt_txt ?? ''), "dd.MM")}
+              day={format(parseISO(d?.dt_txt ?? ''), "EEEE")}
+              feels_like={d?.main.feels_like ?? 0}
+              temp={d?.main.temp ?? 0}
+              temp_max={d?.main.temp_max ?? 0}
+              temp_min={d?.main.temp_min ?? 0}
+              airPressure={`${d?.main.pressure} hPa`}
+              humidity={`${d?.main.humidity}%`}
+              sunrise={format(
+                fromUnixTime(data?.city.sunrise ?? 17777777),
+                'H:mm'
+              )}
+              sunset={format(
+                fromUnixTime(data?.city.sunset ?? 177777777),
+                'H:mm'
+              )}
+              visibility={`${mToKm(d?.visibility ?? 10000)}`}
+              windSpeed={`${convWindSpeed(d?.wind.speed ?? 1.64)}`}
+            />
+          ))}
         </section>
       </main>
     </div>
