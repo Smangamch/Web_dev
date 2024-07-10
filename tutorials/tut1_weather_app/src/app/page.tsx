@@ -10,6 +10,9 @@ import WeatherDetails from "@/components/WeatherDetails";
 import { mToKm } from "@/utils/mToKm";
 import { convWindSpeed } from "@/utils/convWindSpeed";
 import ForcastWeatherDetail from "@/components/ForcastWeatherDetail";
+import { useAtom } from "jotai";
+import { placeAtom } from "./stom";
+import { useEffect } from "react";
 
 interface WeatherDetail {
   dt: number;
@@ -66,14 +69,20 @@ interface WeatherData {
   };
 }
 export default function Home() {
-  const { isLoading, error, data } = useQuery<WeatherData>("repoData", async () => {
-    const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=Katlehong&appid=${process.env.NEXT_PUBLIC_OPEN_WEATHER_API_KEY}`)
+  const [place, setPlace] = useAtom(placeAtom);
+
+  const { isLoading, error, data, refetch } = useQuery<WeatherData>("repoData", async () => {
+    const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${process.env.NEXT_PUBLIC_OPEN_WEATHER_API_KEY}`)
     return data;
   }
   );
 
-  const firstData = data?.list[0];
+  useEffect(() => {
+    refetch();
+  }, [place, refetch])
 
+  const firstData = data?.list[0];
+console.log(place);
   const uniqueDates = [
     ...new Set(
       data?.list.map(
