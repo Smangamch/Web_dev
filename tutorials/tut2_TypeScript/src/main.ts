@@ -41,25 +41,44 @@
 
 // console.log(userObj3.age, userObj3.name,userObj3.getMessage());
 
-// Union operator
-interface UserInterace {
-    name: string
-    surname: string
-    age: number
+// // Union operator
+// interface UserInterace {
+//     name: string
+//     surname: string
+//     age: number
+// }
+
+// let username: string = 'fez';
+// let pageName: string | number = '1';
+// let errMsg: string | null = null;
+
+// let user: UserInterace | null = null;
+
+// // Type alises
+// type ID = string;
+// type PopularTag = string;
+// type MaybePopularTag = PopularTag | null;
+
+// let id: ID = 'Fax';
+
+// const popularTag: PopularTag[] = ["Dragon", "Coffe"];
+// const dragonsTag: MaybePopularTag = null;
+
+// Types 
+// Void
+const doSomething = (): void => {
+    console.log("Do something")
 }
 
-let username: string = 'fez';
-let pageName: string | number = '1';
-let errMsg: string | null = null;
+//Any
+let anyVar: any = undefined;
 
-let user: UserInterace | null = null;
+// Never
+const doSomething2 = (): never => {
+    throw 'never';
+}
 
-// Type alises
-type ID = string;
-type PopularTag = string;
-type MaybePopularTag=PopularTag|null;
-
-let id: ID = 'Fax';
-
-const popularTag: PopularTag[] = ["Dragon", "Coffe"];
-const dragonsTag:MaybePopularTag=null;
+// Unknown
+// Works like any but we cannot assign it to another type, unless we assert
+let varUnknown: unknown = 10;
+let strT: string = varUnknown as string;

@@ -1,10 +1,66 @@
 // // Variables
 // const hello = 'wolrd';
 // let strHello = 'world';
-var username = 'fez';
-var pageName = '1';
-var errMsg = null;
-var user = null;
-var id = 'Fax';
-var popularTag = ["Dragon", "Coffe"];
-var dragonsTag = null;
+// //Specify type
+// let intNumber: number = 3;
+// // Functions
+// const getFullName = (name: string, surname: string): string => {
+//     return name + ' ' + surname;
+// }
+// getFullName("Katlego", "Maredi");
+// // Objects
+// const userObj: { name: string, age: number } = {
+//     name: "Moster",
+//     age: 30
+// }
+// const userObj2: { name: string, age: number } = {
+//     name: "Moster",
+//     age: 30
+// }
+// // Interfaces
+// interface User {
+//     name: string
+//     age?: number
+//     //Use '?' to indicate that it is not required
+//     getMessage(): string
+// }
+// const userObj3: User = {
+//     name: "Fez",
+//     age: 23,
+//     getMessage() {
+//         return "Hello " + name
+//     },
+// }
+// console.log(userObj3.age, userObj3.name,userObj3.getMessage());
+// // Union operator
+// interface UserInterace {
+//     name: string
+//     surname: string
+//     age: number
+// }
+// let username: string = 'fez';
+// let pageName: string | number = '1';
+// let errMsg: string | null = null;
+// let user: UserInterace | null = null;
+// // Type alises
+// type ID = string;
+// type PopularTag = string;
+// type MaybePopularTag = PopularTag | null;
+// let id: ID = 'Fax';
+// const popularTag: PopularTag[] = ["Dragon", "Coffe"];
+// const dragonsTag: MaybePopularTag = null;
+// Types 
+// Void
+var doSomething = function () {
+    console.log("Do something");
+};
+//Any
+var anyVar = undefined;
+// Never
+var doSomething2 = function () {
+    throw 'never';
+};
+// Unknown
+// Works like any but we cannot assign it to another type, unless we assert
+var varUnknown = 10;
+var strT = varUnknown;
